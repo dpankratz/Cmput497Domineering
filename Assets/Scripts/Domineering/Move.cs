@@ -20,6 +20,14 @@ public class Move{
     {
         return string.Format("{0},{1}", Location, Orientation);
     }
+
+    public override bool Equals(object obj)
+    {
+        var move = obj as Move;
+        if (move == null)
+            return false;
+        return move.Location.x == Location.x && move.Location.y == Location.y && move.Orientation == Orientation;
+    }
 }
 
 public enum Orientation

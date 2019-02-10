@@ -36,6 +36,13 @@ public class GameManager : MonoBehaviour
 	    }
     }
 
+    public void ResetGameWithNewAgents(Agent[] agents)
+    {
+       
+        _agents = agents;
+        ResetGame();
+    }
+
     private void ResetGame()
     {
         _currentBoard = new Board(Board.DefaultDimensions, true);
@@ -60,6 +67,10 @@ public class GameManager : MonoBehaviour
         {
             //If left to play then right is winner and vice versa
             var winnerIndex = _currentBoard.IsLeftPlayerMove ? 1 : 0;
+
+            var winnerOrientation = (winnerIndex == 0) ? Orientation.Vertical : Orientation.Horizontal;
+
+            _boardVisualization.FlashDominos(winnerOrientation);
 
             for (var i = 0; i < _agents.Length; i++)
             {

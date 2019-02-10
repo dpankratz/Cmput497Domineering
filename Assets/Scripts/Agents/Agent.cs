@@ -9,4 +9,5 @@ public abstract class Agent : MonoBehaviour
     public abstract void OnMyMoveEvent(Board board, MoveChoiceCallback moveChoiceCallback);
 
     public abstract void OnGameOverEvent(bool isWinner);
+    
 }

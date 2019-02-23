@@ -47,14 +47,25 @@ public class Board
     {
         Dimensions = dimensions;        
         IsStoringMoves = shouldStoreElapsedMoves;
+        BoardState = new BitArray(Dimensions.x * Dimensions.y);
+        IsLeftPlayerMove = true;
+        Reset();
+    }
+
+    public Board(Board board)
+    {
+        Dimensions = board.Dimensions;
+        IsStoringMoves = false;
+        BoardState = (BitArray) board.BoardState.Clone();
+        IsLeftPlayerMove = board.IsLeftPlayerMove;
         Reset();
     }
 
     public void Reset()
     {
-        BoardState = new BitArray(Dimensions.x * Dimensions.y);
+
         ElapsedMoves.Clear();
-        IsLeftPlayerMove = true;
+        
         _cachedVerticalMoveList = _cachedHorizontalMoveList = null;
     }
 
@@ -110,6 +121,12 @@ public class Board
                 
 
         return (NextMoveOrientation == Orientation.Vertical) ? _cachedVerticalMoveList : _cachedHorizontalMoveList;
+    }
+
+    public SortedList<int, Move> GetAllValidOpponentMoves()
+    {
+        GetAllValidMoves();
+        return (NextMoveOrientation == Orientation.Vertical) ? _cachedHorizontalMoveList : _cachedVerticalMoveList ;
     }
 
     public Move GetValidMove()

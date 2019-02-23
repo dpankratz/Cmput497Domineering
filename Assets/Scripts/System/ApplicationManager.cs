@@ -8,7 +8,7 @@ public class ApplicationManager : MonoBehaviour
     [SerializeField] private SplashScreenDisplay _splashScreenDisplay;        
     [SerializeField] private GameManager _gameManager;
 
-    [SerializeField] private Agent[] _randomAgents;
+    [SerializeField] private Agent[] _splashScreenAgents;
 
     void Start()
     {
@@ -26,7 +26,7 @@ public class ApplicationManager : MonoBehaviour
     private void ShowSplashScreen()
     {
         _splashScreenDisplay.Show();
-        _gameManager.ResetGameWithNewAgents(_randomAgents);
+        _gameManager.ResetGameWithNewAgents(_splashScreenAgents);
     }
 
 }

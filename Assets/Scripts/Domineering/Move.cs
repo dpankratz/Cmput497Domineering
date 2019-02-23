@@ -6,7 +6,7 @@ using UnityEngine;
 public class Move{
 
     //Note that the move location is the upper left location of the tile.
-    //i.e. if the tile is vertical is the location of the top half of the tile. 
+    //i.e. if the tile is vertical is the location of the top half of the tile.
     public Vector2Int Location { get; private set; }
     public Orientation Orientation { get; private set; }
 
@@ -18,7 +18,7 @@ public class Move{
 
     public override string ToString()
     {
-        return string.Format("{0},{1}", Location, Orientation);
+        return string.Format("{0}, {1}, ({2})", Location, Location + new Vector2Int((int)Orientation, 1 - (int)Orientation), Orientation);
     }
 
     public override bool Equals(object obj)

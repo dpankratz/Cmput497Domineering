@@ -65,17 +65,14 @@ public class GameManager : MonoBehaviour
         _nextMove = null;
         if (_currentBoard.IsGameOver)
         {
-            //If left to play then right is winner and vice versa
-            var winnerIndex = _currentBoard.IsLeftPlayerMove ? 1 : 0;
+            int winnerIndex = _currentBoard.GetWinner();
 
             var winnerOrientation = (winnerIndex == 0) ? Orientation.Vertical : Orientation.Horizontal;
 
             _boardVisualization.FlashDominos(winnerOrientation);
 
-            for (var i = 0; i < _agents.Length; i++)
-            {
-                _agents[i].OnGameOverEvent(i == winnerIndex);                
-            }
+            _agents[    winnerIndex].OnGameOverEvent(true);
+            _agents[1 - winnerIndex].OnGameOverEvent(false);
             _lastGameTime = Time.time;
             return;
         }

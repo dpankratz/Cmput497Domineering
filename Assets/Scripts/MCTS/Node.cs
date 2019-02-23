@@ -14,39 +14,38 @@ public class Node : IComparable<Node>
   public List<Node> Children = new List<Node>();
   public int Wins { get; private set; }
   public int Visits { get; private set; }
-  public List<Move> UntriedMoves = new List<Move>();
-
-  public class NodeComparer : IComparer<Node>
-  {
-    public NodeComparer (int argument)
-    {
-      Argument = argument;
-    }
-    public int Argument { get ; private set; }
-    public int Compare(Node x, Node y)
-    {
-      double UCB1x = x.Wins/x.Visits + Math.Sqrt(2*Math.Log(Argument)/x.Visits);
-      double UCB1y = y.Wins/y.Visits + Math.Sqrt(2*Math.Log(Argument)/y.Visits);
-      return (UCB1x > UCB1y) ? 1 : -1;
-    }
-  }
+  public SortedList<int, Move> UntriedMoves = null;
 
   public Node(Move move, Node parent, Board state)
   {
     PrevMove = move;
     Parent = parent;
     State = state;
+    UntriedMoves = state.GetAllValidMoves();
+  }
+
+  public Node DeepCopy()
+  {
+    Node copy = new Node(PrevMove, Parent, State);
+    copy.Wins = Wins;
+    copy.Visits = Visits;
+    // copy.Children = (List<Node>)Children.Clone();
+    return copy;
   }
 
   public Node UCTSelectChild()
   {
-    return Children.OrderBy(x => x, new NodeComparer(Visits)).ToList()[Children.Count - 1];
+    Node best = Children[0];
+    foreach (Node node in Children) if
+    (node.Wins/node.Visits + Math.Sqrt(2*Math.Log(Visits)/node.Visits) >
+     best.Wins/best.Visits + Math.Sqrt(2*Math.Log(Visits)/best.Visits)) best = node;
+    return best;
   }
 
   public Node AddChild(Move move, Board state)
   {
     Node child = new Node(move, this, state);
-    UntriedMoves.Remove(move);
+    UntriedMoves.Remove(state.GetSortableIndexFromMove(move));
     Children.Add(child);
     return child;
   }
@@ -59,6 +58,6 @@ public class Node : IComparable<Node>
 
   public int CompareTo(Node other)
   {
-    return (Visits > other.Visits) ? 1 : -1;
+    return Visits - other.Visits;
   }
 }

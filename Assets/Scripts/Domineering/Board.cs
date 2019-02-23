@@ -15,9 +15,9 @@ public class Board
 
     //This stores the current board state. Notice that a given position in domineering can be in exactly 2 states thus lending itself to a bitarray.
     public BitArray BoardState { get; private set; }
-    
+
     public bool IsStoringMoves { get; private set; }
-   
+
     public bool IsLeftPlayerMove { get; private set; } //i.e. vertical
 
     public bool IsGameOver
@@ -43,7 +43,7 @@ public class Board
 
     public Board(Vector2Int dimensions,bool shouldStoreElapsedMoves)
     {
-        Dimensions = dimensions;        
+        Dimensions = dimensions;
         IsStoringMoves = shouldStoreElapsedMoves;
         Reset();
     }
@@ -72,7 +72,6 @@ public class Board
 
     public SortedList<int,Move> GetAllValidMoves()
     {
-
         if (_cachedVerticalMoveList != null || _cachedHorizontalMoveList != null)
             return (NextMoveOrientation == Orientation.Vertical) ? _cachedVerticalMoveList : _cachedHorizontalMoveList;
 
@@ -97,15 +96,12 @@ public class Board
                     var candidateMoveHorizontal = new Move(new Vector2Int(x, y), Orientation.Horizontal);
 
                     if (!IsMoveOverlapping(candidateMoveHorizontal))
-                        validHorizontalMoves.Add(GetSortableIndexFromMove(candidateMoveHorizontal),
-                            candidateMoveHorizontal);
+                        validHorizontalMoves.Add(GetSortableIndexFromMove(candidateMoveHorizontal), candidateMoveHorizontal);
                 }
             }
         }
-
         _cachedVerticalMoveList = validVerticalMoves;
         _cachedHorizontalMoveList = validHorizontalMoves;
-                
 
         return (NextMoveOrientation == Orientation.Vertical) ? _cachedVerticalMoveList : _cachedHorizontalMoveList;
     }
@@ -113,10 +109,8 @@ public class Board
     public Move GetValidMove()
     {
         //This is okay because we're using a cache
-        var moves = GetAllValidMoves();        
+        var moves = GetAllValidMoves();
         return moves[moves.Keys[Random.Range(0,moves.Count)]];
-
-
     }
 
     public bool IsMoveValid(Move move)
@@ -132,7 +126,6 @@ public class Board
 
     private bool IsMoveOverlapping(Move move)
     {
-
         if (!IsLocationEmpty(move.Location))
             return true;
 
@@ -142,17 +135,12 @@ public class Board
     }
 
     public bool IsLocationEmpty(Vector2Int location)
-    {        
-
+    {
         return !BoardState[GetBoardIndexFromLocation(location)];
     }
 
-
     public void PlayMove(Move move)
     {
-
-        
-
         if (!IsMoveValid(move))
         {
             Debug.LogErrorFormat("Board received invalid move! {0}",move);
@@ -171,39 +159,29 @@ public class Board
 
         BoardState[topLeftIndex] = true;
         BoardState[otherIndex] = true;
-        RemoveMovesFromCache(move.Location);                            
+        RemoveMovesFromCache(move.Location);
         RemoveMovesFromCache(otherLocation);
 
         IsLeftPlayerMove = !IsLeftPlayerMove;
-
-        
-
     }
 
     private void RemoveMovesFromCache(Vector2Int location)
     {
-        
         //Update cached moves
         if (_cachedVerticalMoveList == null || _cachedHorizontalMoveList == null)
-            return;             
-        
+            return;
+
         //Remove the moves in the exact spot the domino was placed
         var verticalKey = GetSortableIndexFromMove(new Move(location, Orientation.Vertical));
         var horizontalKey = GetSortableIndexFromMove(new Move(location, Orientation.Horizontal));
-        if (_cachedVerticalMoveList.ContainsKey(verticalKey))
-            _cachedVerticalMoveList.Remove(verticalKey);            
-        if (_cachedHorizontalMoveList.ContainsKey(horizontalKey))
-            _cachedHorizontalMoveList.Remove(horizontalKey);
-                
+        _cachedVerticalMoveList.Remove(verticalKey);
+        _cachedHorizontalMoveList.Remove(horizontalKey);
+
         //Remove the moves that instersect with the domino
         var downKey = GetSortableIndexFromMove(new Move(location + Vector2Int.down, Orientation.Vertical));
         var leftKey = GetSortableIndexFromMove(new Move(location + Vector2Int.left, Orientation.Horizontal));
-
-        if (_cachedVerticalMoveList.ContainsKey(downKey))
-            _cachedVerticalMoveList.Remove(downKey);
-        if (_cachedHorizontalMoveList.ContainsKey(leftKey))
-            _cachedHorizontalMoveList.Remove(leftKey);
-
+        _cachedVerticalMoveList.Remove(downKey);
+        _cachedHorizontalMoveList.Remove(leftKey);
     }
 
     public bool IsLocationWithinBoard(Vector2Int location)
@@ -216,7 +194,7 @@ public class Board
         return Dimensions.y * location.y + location.x;
     }
 
-    private int GetSortableIndexFromMove(Move move)
+    public int GetSortableIndexFromMove(Move move)
     {
         var location = move.Location;
         if (!IsLocationWithinBoard(location))
@@ -226,8 +204,8 @@ public class Board
 
     public Board DeepCopy()
     {
-      Board copy = new Board(Dimensions, IsStoringMoves);
-      copy.BoardState = BoardState;
+      Board copy = new Board(Dimensions, false);
+      copy.BoardState = (BitArray) BoardState.Clone();
       copy.IsLeftPlayerMove = IsLeftPlayerMove;
       return copy;
     }
@@ -237,5 +215,4 @@ public class Board
       //If left to play then right is winner and vice versa
       return IsLeftPlayerMove ? 1 : 0;
     }
-
 }

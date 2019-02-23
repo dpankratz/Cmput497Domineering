@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MCTS;
 
 public class RandomPlayer : Agent
 {
@@ -20,9 +21,11 @@ public class RandomPlayer : Agent
 
     public override void OnMyMoveEvent(Board board, MoveChoiceCallback moveChoiceCallback)
     {
-        var allMoves = board.GetAllValidMoves();                
-        var keys = allMoves.Keys;
-        moveChoiceCallback(allMoves[keys[Random.Range(0, keys.Count)]]);
+        // var allMoves = board.GetAllValidMoves();
+        // var keys = allMoves.Keys;
+        // moveChoiceCallback(allMoves[keys[Random.Range(0, keys.Count)]]);
+        Move move = new MCTS.UCT().getMove(board, 56);
+        moveChoiceCallback(move);
     }
 
 }

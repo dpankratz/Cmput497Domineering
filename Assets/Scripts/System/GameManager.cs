@@ -46,16 +46,17 @@ public class GameManager : MonoBehaviour
     private void ResetGame()
     {
         _currentBoard = new Board(Board.DefaultDimensions, true);
-        _lastMoveTime = Time.time;
+        _boardVisualization.VisualizeBoard(_currentBoard);
+        _lastMoveTime = Time.time + _minimumTimeBetweenMoves * 2;
         _nextMove = null;
         _agentIndex = 0;
         GetNextMoveFromAgent();
-        _boardVisualization.VisualizeBoard(_currentBoard);
+
     }
 
     private void GetNextMoveFromAgent()
     {
-        _agents[_agentIndex++ % 2].OnMyMoveEvent(_currentBoard, ReceiveMoveFromAgent);
+        _agents[_agentIndex++ % _agents.Length].OnMyMoveEvent(_currentBoard, ReceiveMoveFromAgent);
     }
 
     private void CommitMove()

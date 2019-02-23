@@ -1,5 +1,3 @@
-﻿
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -116,10 +114,9 @@ public class Board
     {
         //This is okay because we're using a cache
         var moves = GetAllValidMoves();        
+        return moves[moves.Keys[Random.Range(0,moves.Count)]];
 
-        var firstKey = moves.Keys[0];
 
-        return moves[firstKey];
     }
 
     public bool IsMoveValid(Move move)
@@ -225,6 +222,20 @@ public class Board
         if (!IsLocationWithinBoard(location))
             return InvalidBoardPosition;
         return (move.Orientation == Orientation.Horizontal ? Dimensions.x * Dimensions.y : 0) + Dimensions.y * location.y + location.x;
+    }
+
+    public Board DeepCopy()
+    {
+      Board copy = new Board(Dimensions, IsStoringMoves);
+      copy.BoardState = BoardState;
+      copy.IsLeftPlayerMove = IsLeftPlayerMove;
+      return copy;
+    }
+
+    public int GetWinner()
+    {
+      //If left to play then right is winner and vice versa
+      return IsLeftPlayerMove ? 1 : 0;
     }
 
 }

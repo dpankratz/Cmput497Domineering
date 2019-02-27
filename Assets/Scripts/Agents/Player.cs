@@ -16,6 +16,19 @@ public class Player : Agent
 
     private MoveChoiceCallback _moveChoiceCallback = null;
 
+    public override AgentType Type
+    {
+        get { return AgentType.Human; }
+    }
+
+    void OnEnable()
+    {        
+        _visualizedMove = null;
+        _isSelectingMove = false;
+        _validMoves = null;
+        _moveChoiceCallback = null;
+    }
+
     void Update ()
 	{
     
@@ -87,4 +100,6 @@ public class Player : Agent
         _validMoves = null;
         _moveChoiceCallback = null;
     }
+
+
 }

@@ -4,29 +4,30 @@ using UnityEngine;
 
 public class ApplicationManager : MonoBehaviour
 {
+    public static ApplicationManager instance;
 
     [SerializeField] private SplashScreenDisplay _splashScreenDisplay;        
-    [SerializeField] private GameManager _gameManager;
-
-    [SerializeField] private Agent[] _splashScreenAgents;
+    
+    private void Awake()
+    {
+        instance = this;                
+    }
 
     void Start()
     {
-        ShowSplashScreen();
+        ShowSplashScreen();                
     }
 
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
-            ShowSplashScreen();
-            
+            ShowSplashScreen();            
     }
 
 
     private void ShowSplashScreen()
     {
-        _splashScreenDisplay.Show();
-        _gameManager.ResetGameWithNewAgents(_splashScreenAgents);
+        _splashScreenDisplay.Show();        
     }
 
 }

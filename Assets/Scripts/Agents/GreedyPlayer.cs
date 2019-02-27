@@ -10,6 +10,12 @@ public class GreedyPlayer : Agent
     private int _wins = 0;
     private int _games = 0;
 
+
+    public override AgentType Type
+    {
+        get { return AgentType.Greedy; }
+    }
+
     public override void OnGameOverEvent(bool isWinner)
     {
         if (isWinner)
@@ -34,12 +40,10 @@ public class GreedyPlayer : Agent
             var numOpponenetMoves = simulatedBoard.GetAllValidMoves().Count;
             var numOurMoves = simulatedBoard.GetAllValidOpponentMoves().Count;
             if (numOpponenetMoves > min) continue;
-            if (numOpponenetMoves == min && numOurMoves <= max) continue;
+            if (numOpponenetMoves == min && (Random.value > 0.8f || numOurMoves <= max)) continue;
             min = numOpponenetMoves;
             max = numOurMoves;
             bestMove = move;
-
-
         }
 
 

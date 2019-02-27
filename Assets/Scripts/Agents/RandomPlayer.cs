@@ -1,13 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MCTS;
 
 public class RandomPlayer : Agent
 {
 
     private int _wins = 0;
     private int _games = 0;
+
+    public override AgentType Type
+    {
+        get { return AgentType.Random; }
+    }
 
     public override void OnGameOverEvent(bool isWinner)
     {
@@ -21,11 +25,11 @@ public class RandomPlayer : Agent
 
     public override void OnMyMoveEvent(Board board, MoveChoiceCallback moveChoiceCallback)
     {
-        // var allMoves = board.GetAllValidMoves();
-        // var keys = allMoves.Keys;
-        // moveChoiceCallback(allMoves[keys[Random.Range(0, keys.Count)]]);
-        Move move = new MCTS.UCT().getMove(board, 56);
-        moveChoiceCallback(move);
+         var allMoves = board.GetAllValidMoves();
+         var keys = allMoves.Keys;
+         moveChoiceCallback(allMoves[keys[Random.Range(0, keys.Count)]]);
+        
+        
     }
 
 }

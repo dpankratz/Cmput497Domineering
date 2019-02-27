@@ -15,6 +15,16 @@ public class GameManager : MonoBehaviour
     private Move _nextMove;
     private int _agentIndex;
 
+    internal Agent AgentOne
+    {
+        get { return _agents[0]; }
+    }
+
+    internal Agent AgentTwo
+    {
+        get { return _agents[1]; }
+    }
+
 	void Start ()
 	{	 
         if(_agents.Length != 2)
@@ -38,8 +48,11 @@ public class GameManager : MonoBehaviour
 
     public void ResetGameWithNewAgents(Agent[] agents)
     {
-       
+        _agents[0].gameObject.SetActive(false);
+        _agents[1].gameObject.SetActive(false);
         _agents = agents;
+        _agents[0].gameObject.SetActive(true);
+        _agents[1].gameObject.SetActive(true);
         ResetGame();
     }
 

@@ -8,7 +8,7 @@ namespace MCTS
     {
         public Move getMove(Board rootBoard, int itermax)
         {
-            Node rootNode = new Node(null, null, rootBoard.DeepCopy());
+            Node rootNode = new Node(Move.InvalidMove, null, rootBoard.DeepCopy());
             for (int i = 0; i < itermax; i++)
             {
                 Node node = rootNode;

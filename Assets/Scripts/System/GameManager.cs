@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
 	
 	void Update ()
 	{
-	    if (Time.time - _lastMoveTime >= _minimumTimeBetweenMoves && _nextMove != null && !_currentBoard.IsGameOver)
+	    if (Time.time - _lastMoveTime >= _minimumTimeBetweenMoves && _nextMove != Move.InvalidMove && !_currentBoard.IsGameOver)
 	    {
             CommitMove();
 	    }
@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour
         _currentBoard = new Board(Board.DefaultDimensions, true);
         _boardVisualization.VisualizeBoard(_currentBoard);
         _lastMoveTime = Time.time + _minimumTimeBetweenMoves * 2;
-        _nextMove = null;
+        _nextMove = Move.InvalidMove;
         _agentIndex = 0;
         GetNextMoveFromAgent();
 
@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
     {
         _currentBoard.PlayMove(_nextMove);
         _boardVisualization.VisualizeBoard(_currentBoard);
-        _nextMove = null;
+        _nextMove = Move.InvalidMove;
         if (_currentBoard.IsGameOver)
         {
             int winnerIndex = _currentBoard.GetWinner();

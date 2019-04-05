@@ -10,9 +10,11 @@ public class Player : Agent
     [SerializeField] private Board _board;
     private Vector2Int _visualizedLocation = new Vector2Int(-1,-1);
     private SortedList<int, Move> _validMoves = null;
-    private Move _visualizedMove = null;
+    private Move _visualizedMove = Move.InvalidMove;
+
 
     private bool _isSelectingMove = false;
+
 
     private MoveChoiceCallback _moveChoiceCallback = null;
 
@@ -23,7 +25,7 @@ public class Player : Agent
 
     void OnEnable()
     {        
-        _visualizedMove = null;
+        _visualizedMove = Move.InvalidMove;
         _isSelectingMove = false;
         _validMoves = null;
         _moveChoiceCallback = null;
@@ -33,14 +35,15 @@ public class Player : Agent
 	{
     
 
-	    if (_visualizedMove != null)
-	    {
+	    if (_visualizedMove != Move.InvalidMove)
+	    {            
 	        if (InputManager.GetMouseButtonDown(0))
 	        {                
+                
 	            _moveChoiceCallback(_visualizedMove);
 	            _isSelectingMove = false;
                 _visualization.ClearSelectedMove(_visualizedMove);
-	            _visualizedMove = null;
+	            _visualizedMove = Move.InvalidMove;
 	        }
 	    }
 
@@ -63,7 +66,9 @@ public class Player : Agent
                 _visualization.ClearSelectedMove(_visualizedMove);
             _visualizedLocation = hitLocation;  
 
-	        var candidateMove = new Move(_visualizedLocation, _board.NextMoveOrientation);
+	        var candidateMove = new Move(){
+	            Location = _visualizedLocation,
+	            Orientation = _board.NextMoveOrientation};
 
 	        _visualizedMove = candidateMove;
 
@@ -77,7 +82,7 @@ public class Player : Agent
 	            }
 	        }
 
-	        _visualizedMove = null;
+	        _visualizedMove = Move.InvalidMove;
 	    }   
 	}
 
@@ -95,7 +100,7 @@ public class Player : Agent
         if(isWinner)
             Debug.LogFormat("{0} is the winner!",name);
 
-        _visualizedMove = null;
+        _visualizedMove = Move.InvalidMove;
         _isSelectingMove = false;
         _validMoves = null;
         _moveChoiceCallback = null;

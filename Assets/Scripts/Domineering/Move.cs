@@ -3,32 +3,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Move{
+public struct Move
+{
+    public static Move InvalidMove = new Move()
+    {
+        Location = new Vector2Int(-2, -2)
+    };
 
     //Note that the move location is the upper left location of the tile.
     //i.e. if the tile is vertical is the location of the top half of the tile.
-    public Vector2Int Location { get; private set; }
-    public Orientation Orientation { get; private set; }
-
-    public Move(Vector2Int location, Orientation orientation)
-    {
-        Location = location;
-        Orientation = orientation;
-    }
+    public Vector2Int Location;
+    public Orientation Orientation;
 
     public override string ToString()
     {
         return string.Format("{0}, {1}, ({2})", Location, Location + new Vector2Int((int)Orientation, 1 - (int)Orientation), Orientation);
     }
 
-    public override bool Equals(object obj)
+    public static bool operator ==(Move c1, Move c2)
     {
-        var move = obj as Move;
-        if (move == null)
-            return false;
-        return move.Location.x == Location.x && move.Location.y == Location.y && move.Orientation == Orientation;
+        return c1.Location.x == c2.Location.x && c1.Location.y == c2.Location.y && c1.Orientation == c2.Orientation;
+    }
+
+    public static bool operator !=(Move c1, Move c2)
+    {
+        return !(c1 == c2);
     }
 }
+
 
 public enum Orientation
 {

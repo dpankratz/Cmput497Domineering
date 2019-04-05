@@ -32,7 +32,7 @@ public class GreedyPlayer : Agent
 
         var min = int.MaxValue;
         var max = 0;
-        Move bestMove = null;
+        Move bestMove = new Move();
         foreach (var move in allMoves.Values)
         {
             var simulatedBoard = new Board(board);

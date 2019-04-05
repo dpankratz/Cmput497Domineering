@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using MCTS;
 
-public class MctsPlayer : Agent {
+public class MctsPlayer : Agent
+{
 
+    [SerializeField] private int _numSimulations = 56;
 
     private int _wins = 0;
     private int _games = 0;
@@ -30,7 +32,7 @@ public class MctsPlayer : Agent {
         // var allMoves = board.GetAllValidMoves();
         // var keys = allMoves.Keys;
         // moveChoiceCallback(allMoves[keys[Random.Range(0, keys.Count)]]);
-        Move move = new MCTS.UCT().getMove(board, 56);
+        Move move = new MCTS.UCT().getMove(board, _numSimulations);
         moveChoiceCallback(move);
     }
 

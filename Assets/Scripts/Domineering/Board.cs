@@ -96,7 +96,10 @@ public class Board
             {
                 if (y < Dimensions.y - 1)
                 {
-                    var candidateMoveVertical = new Move(new Vector2Int(x, y), Orientation.Vertical);
+                    var candidateMoveVertical = new Move(){
+                        Location = new Vector2Int(x, y),
+                        Orientation = Orientation.Vertical
+                    };
 
                     if (!IsMoveOverlapping(candidateMoveVertical))
                         validVerticalMoves.Add(GetSortableIndexFromMove(candidateMoveVertical), candidateMoveVertical);
@@ -104,7 +107,8 @@ public class Board
 
                 if (x < Dimensions.x - 1)
                 {
-                    var candidateMoveHorizontal = new Move(new Vector2Int(x, y), Orientation.Horizontal);
+                    var candidateMoveHorizontal = new Move(){
+                        Location = new Vector2Int(x, y), Orientation = Orientation.Horizontal};
 
                     if (!IsMoveOverlapping(candidateMoveHorizontal))
                         validHorizontalMoves.Add(GetSortableIndexFromMove(candidateMoveHorizontal), candidateMoveHorizontal);
@@ -189,14 +193,14 @@ public class Board
             return;
 
         //Remove the moves in the exact spot the domino was placed
-        var verticalKey = GetSortableIndexFromMove(new Move(location, Orientation.Vertical));
-        var horizontalKey = GetSortableIndexFromMove(new Move(location, Orientation.Horizontal));
+        var verticalKey = GetSortableIndexFromMove(new Move(){Location = location, Orientation = Orientation.Vertical});
+        var horizontalKey = GetSortableIndexFromMove(new Move() { Location = location, Orientation = Orientation.Horizontal });
         _cachedVerticalMoveList.Remove(verticalKey);
         _cachedHorizontalMoveList.Remove(horizontalKey);
 
         //Remove the moves that instersect with the domino
-        var downKey = GetSortableIndexFromMove(new Move(location + Vector2Int.down, Orientation.Vertical));
-        var leftKey = GetSortableIndexFromMove(new Move(location + Vector2Int.left, Orientation.Horizontal));
+        var downKey = GetSortableIndexFromMove(new Move(){Location = location + Vector2Int.down, Orientation = Orientation.Vertical});
+        var leftKey = GetSortableIndexFromMove(new Move(){Location = location + Vector2Int.left, Orientation = Orientation.Horizontal});
         _cachedVerticalMoveList.Remove(downKey);
         _cachedHorizontalMoveList.Remove(leftKey);
     }

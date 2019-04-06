@@ -37,11 +37,11 @@ public class GreedyPlayer : Agent
         {
             var simulatedBoard = new Board(board);
             simulatedBoard.PlayMove(move);
-            var numOpponenetMoves = simulatedBoard.GetAllValidMoves().Count;
+            var numOpponentMoves = simulatedBoard.GetAllValidMoves().Count;
             var numOurMoves = simulatedBoard.GetAllValidOpponentMoves().Count;
-            if (numOpponenetMoves > min) continue;
-            if (numOpponenetMoves == min && (Random.value > 0.8f || numOurMoves <= max)) continue;
-            min = numOpponenetMoves;
+            if (numOpponentMoves > min) continue;
+            if (numOpponentMoves == min && (Random.value > 0.8f || numOurMoves <= max)) continue;
+            min = numOpponentMoves;
             max = numOurMoves;
             bestMove = move;
         }

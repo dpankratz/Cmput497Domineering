@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : Agent
-{    
+{
     [SerializeField] private Camera _camera;
     [SerializeField] private BoardVisualization _visualization;
     [SerializeField] private BoxCollider _boardBoxCollider;
@@ -24,7 +24,7 @@ public class Player : Agent
     }
 
     void OnEnable()
-    {        
+    {
         _visualizedMove = Move.InvalidMove;
         _isSelectingMove = false;
         _validMoves = null;
@@ -33,13 +33,13 @@ public class Player : Agent
 
     void Update ()
 	{
-    
+
 
 	    if (_visualizedMove != Move.InvalidMove)
-	    {            
+	    {
 	        if (InputManager.GetMouseButtonDown(0))
-	        {                
-                
+	        {
+
 	            _moveChoiceCallback(_visualizedMove);
 	            _isSelectingMove = false;
                 _visualization.ClearSelectedMove(_visualizedMove);
@@ -58,13 +58,12 @@ public class Player : Agent
 
 	        var hitLocation = _visualization.GetLocationFromWorldPosition(hit.point,_board.NextMoveOrientation);
 
-            
+
 	        if (hitLocation == _visualizedLocation)
 	            return;
-	       
-            if(_visualizedMove != null)
-                _visualization.ClearSelectedMove(_visualizedMove);
-            _visualizedLocation = hitLocation;  
+
+            _visualization.ClearSelectedMove(_visualizedMove);
+            _visualizedLocation = hitLocation;
 
 	        var candidateMove = new Move(){
 	            Location = _visualizedLocation,
@@ -83,7 +82,7 @@ public class Player : Agent
 	        }
 
 	        _visualizedMove = Move.InvalidMove;
-	    }   
+	    }
 	}
 
     public override void OnMyMoveEvent(Board board, MoveChoiceCallback moveChoiceCallback)

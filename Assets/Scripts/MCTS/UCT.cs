@@ -12,7 +12,7 @@ namespace MCTS
             for (int i = 0; i < itermax; i++)
             {
                 Node node = rootNode;
-                Board board = rootBoard.DeepCopy();
+                Board board = new Board(rootBoard);
 
                 while (node.UntriedMoves.Count == 0 & node.Children.Count != 0)
                 {
@@ -22,9 +22,18 @@ namespace MCTS
 
                 if (node.UntriedMoves.Count != 0)
                 {
-                    int MoveKey = node.UntriedMoves.Keys[Random.Range(0, node.UntriedMoves.Count)];
-                    board.PlayMove(node.UntriedMoves[MoveKey]);
-                    node = node.AddChild(node.UntriedMoves[MoveKey], board);
+                    var max = 0;
+                    Move bestMove = new Move();
+                    foreach (var move in node.UntriedMoves.Values)
+                    {
+                        var diff = move.Value(board);
+                        if (diff < max) continue;
+                        if (Random.value > .9f) continue;
+                        max = diff;
+                        bestMove = move;
+                    }
+                    board.PlayMove(bestMove);
+                    node = node.AddChild(bestMove, board);
                 }
 
                 while (board.GetAllValidMoves().Count != 0)
@@ -32,7 +41,7 @@ namespace MCTS
 
                 while (node != null)
                 {
-                    if (board.IsGameOver) node.Update(board.GetWinner());
+                    node.Update(board.GetWinner(node.IsLeftPlayerMove));
                     node = node.Parent;
                 }
             }

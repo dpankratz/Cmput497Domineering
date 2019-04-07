@@ -108,7 +108,9 @@ public class Board
                 if (x < Dimensions.x - 1)
                 {
                     var candidateMoveHorizontal = new Move(){
-                        Location = new Vector2Int(x, y), Orientation = Orientation.Horizontal};
+                        Location = new Vector2Int(x, y),
+                        Orientation = Orientation.Horizontal
+                    };
 
                     if (!IsMoveOverlapping(candidateMoveHorizontal))
                         validHorizontalMoves.Add(GetSortableIndexFromMove(candidateMoveHorizontal), candidateMoveHorizontal);
@@ -235,5 +237,10 @@ public class Board
     {
       //If left to play then right is winner and vice versa
       return IsLeftPlayerMove ? 1 : 0;
+    }
+
+    public int GetWinner(bool IsLeft)
+    {
+      return IsLeftPlayerMove == IsLeft ? 1 : 0;
     }
 }

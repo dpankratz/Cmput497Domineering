@@ -6,24 +6,9 @@ using Random = UnityEngine.Random;
 
 public class GreedyPlayer : Agent
 {
-
-    private int _wins = 0;
-    private int _games = 0;
-
-
     public override AgentType Type
     {
         get { return AgentType.Greedy; }
-    }
-
-    public override void OnGameOverEvent(bool isWinner)
-    {
-        if (isWinner)
-            _wins++;
-
-        _games++;
-
-        Debug.LogFormat("{0} has winrate {1} / {2}!", name, _wins, _games);
     }
 
     public override void OnMyMoveEvent(Board board, MoveChoiceCallback moveChoiceCallback)
@@ -45,9 +30,6 @@ public class GreedyPlayer : Agent
             max = numOurMoves;
             bestMove = move;
         }
-
-
         moveChoiceCallback(bestMove);
     }
-
 }

@@ -29,6 +29,15 @@ public struct Move
     {
         return !(c1 == c2);
     }
+
+    public int Value(Board board)
+    {
+      var simulatedBoard = new Board(board);
+      simulatedBoard.PlayMove(this);
+      var numMoves = simulatedBoard.GetAllValidOpponentMoves().Count;
+      var numOpponentMoves = simulatedBoard.GetAllValidMoves().Count;
+      return numMoves - numOpponentMoves;
+    }
 }
 
 

@@ -15,19 +15,15 @@ public class GreedyPlayer : Agent
     {
         var allMoves = board.GetAllValidMoves();
 
-        var min = int.MaxValue;
-        var max = 0;
+        var min = int.MaxValue;        
         Move bestMove = new Move();
         foreach (var move in allMoves.Values)
         {
             var simulatedBoard = new Board(board);
             simulatedBoard.PlayMove(move);
-            var numOpponentMoves = simulatedBoard.GetAllValidMoves().Count;
-            var numOurMoves = simulatedBoard.GetAllValidOpponentMoves().Count;
-            if (numOpponentMoves > min) continue;
-            if (numOpponentMoves == min && (Random.value > 0.8f || numOurMoves <= max)) continue;
-            min = numOpponentMoves;
-            max = numOurMoves;
+            var numOpponentMoves = simulatedBoard.GetAllValidMoves().Count;            
+            if (numOpponentMoves > min) continue;            
+            min = numOpponentMoves;            
             bestMove = move;
         }
         moveChoiceCallback(bestMove);

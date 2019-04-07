@@ -23,7 +23,7 @@ namespace MCTS
                 if (node.UntriedMoves.Count != 0)
                 {
                     var max = 0;
-                    Move bestMove = new Move();
+                    Move bestMove = node.UntriedMoves.Values[0];
                     foreach (var move in node.UntriedMoves.Values)
                     {
                         var diff = move.Value(board);

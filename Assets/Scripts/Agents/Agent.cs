@@ -4,8 +4,6 @@ using UnityEngine;
 
 public abstract class Agent : MonoBehaviour
 {
-    private int _wins = 0;
-    private int _games = 0;
 
     public virtual AgentType Type
     {
@@ -18,12 +16,8 @@ public abstract class Agent : MonoBehaviour
 
     public virtual void OnGameOverEvent(bool isWinner)
     {
-        if (isWinner){
+        if (isWinner)
           Debug.LogFormat("{0} is the winner!",name);
-          _wins++;
-        }
-        _games++;
-        // Debug.LogFormat("{0} has winrate {1} / {2}!", name, _wins, _games);
     }
 
 }
